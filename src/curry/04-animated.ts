@@ -1,7 +1,7 @@
 import { throttle } from "./02-throttle";
 
 declare type InterpolateRage = [number, number];
-function interpolation(rangeA: InterpolateRage, rangeB: InterpolateRage) {
+export function interpolation(rangeA: InterpolateRage, rangeB: InterpolateRage) {
   const LA = rangeA[1] - rangeA[0];
   const LB = rangeB[1] - rangeB[0];
   return (a: number) => {
@@ -15,19 +15,15 @@ function interpolation(rangeA: InterpolateRage, rangeB: InterpolateRage) {
     return Math.round(ratio * LB + rangeB[0]);
   };
 }
-// const f = interpolation([0,1],[0,100])
-// console.log(f(0.25),f(0.75),f(1),f(-1),f(5))
+
 
 declare type CombineFN<A, B> = (input: A) => B;
-function combine<T, Q, R>(fn1: CombineFN<T, Q>, fn2: CombineFN<Q, R>) {
+export function combine<T, Q, R>(fn1: CombineFN<T, Q>, fn2: CombineFN<Q, R>) {
   return (a) => {
     return fn2(fn1(a));
   };
 }
-// const add3 = (x: number) => x + 3;
-// const subfix = (x: number) => x + "@str";
-// const f = combine(add3, subfix);
-// console.log(f(10));
+
 
 class Animated<T> {
   mapF: (value: number) => T;
@@ -78,7 +74,7 @@ const timer: TimeFN = (callback, tick = 16, last = 300) => {
 
   function rafLoop() {
     raf(() => {
-      const ratio = new Date().getTime() - start / last;
+      const ratio = (new Date().getTime() - start) / last;
       if (ratio > 1) {
         cb(1);
         return;
@@ -95,7 +91,7 @@ const a = Animated.of(0, str.length).map((i) => {
   return str.slice(0, i);
 });
 
-a.start(300, 500, () => {
+a.start(300, 5000, () => {
   console.clear();
   console.log(a.getValue());
 });
