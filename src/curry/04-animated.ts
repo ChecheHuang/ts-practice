@@ -86,12 +86,12 @@ const timer: TimeFN = (callback, tick = 16, last = 300) => {
   rafLoop();
 };
 
-const str = "Hi,greetings.......";
-const a = Animated.of(0, str.length).map((i) => {
-  return str.slice(0, i);
-});
+// const str = "Hi,greetings.......";
+// const a = Animated.of(0, str.length).map((i) => {
+//   return str.slice(0, i);
+// });
 
-a.start(300, 5000, () => {
-  console.clear();
-  console.log(a.getValue());
-});
+// a.start(300, 5000, () => {
+//   console.clear();
+//   console.log(a.getValue());
+// });
