@@ -16,13 +16,13 @@ export function throttle(fn: FNThrottle, interval = 100) {
   };
 }
 
-// let counter = 0;
-// const onMouseMove = throttle(() => {
-//   console.log("move", counter);
-// });
-// const I = setInterval(() => {
-//   if (counter++ === 1000) {
-//     clearTimeout(I);
-//   }
-//   onMouseMove();
-// }, 1);
+let counter = 0;
+const onMouseMove = throttle(() => {
+  console.log("move", counter);
+});
+const I = setInterval(() => {
+  if (counter++ === 1000) {
+    clearTimeout(I);
+  }
+  onMouseMove();
+}, 1);

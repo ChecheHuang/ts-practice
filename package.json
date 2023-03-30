@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "tsc --watch "
+    "dev": "tsc --watch ",
+    "demo":"ts-node ./src/pjchenderTypescript/demo.ts"
   },
   "author": "",
   "license": "ISC",
