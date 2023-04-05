@@ -488,59 +488,104 @@
 //6.import 'reflect-metadata'
 //7.axios
 
-const Base = (name:string) => {
- const fn:ClassDecorator=(target=>{
-    //  console.log(target);
-     target.prototype.name = name;
-     target.prototype.fn = () => {
-    //    console.log("我是憨憨");
-     };
- })
- return fn
-};
-import axios from 'axios';
-import 'reflect-metadata'
-const Get = (url:string)=>{
-    const fn: MethodDecorator = (
-      target,
-      __key,
-      descriptor: PropertyDescriptor
-    ) => {
-    //   console.log(target, key, descriptor);
-    const key = Reflect.getMetadata('key',target)
-      axios.get(url).then(res=>{
-        descriptor.value(key? res.data[key]:res.data)
-      })
-    };
-    return fn
-}
+// const Base = (name:string) => {
+//  const fn:ClassDecorator=(target=>{
+//     //  console.log(target);
+//      target.prototype.name = name;
+//      target.prototype.fn = () => {
+//     //    console.log("我是憨憨");
+//      };
+//  })
+//  return fn
+// };
+// // import axios from 'axios';
+// import axios from 'axios';
+// import 'reflect-metadata'
+// const Get = (url:string)=>{
+//     const fn: MethodDecorator = (
+//       target,
+//       __key,
+//       descriptor: PropertyDescriptor
+//     ) => {
+//     //   console.log(target, key, descriptor);
+//     const key = Reflect.getMetadata('key',target)
+//       axios.get(url).then(res=>{
+//         descriptor.value(key? res.data[key]:res.data)
+//       })
+//     };
+//     return fn
+// }
 
-const Result = ()=>{
-    const fn:ParameterDecorator=(target,key,index)=>{
-        Reflect.defineMetadata('key','body',target)
-        console.log(target, key, index);
-    }
-    return fn
-}
-const Name:PropertyDecorator=(target,key)=>{
-    console.log(target,key)
-}
+// const Result = ()=>{
+//     const fn:ParameterDecorator=(target,key,index)=>{
+//         Reflect.defineMetadata('key','body',target)
+//         console.log(target, key, index);
+//     }
+//     return fn
+// }
+// const Name:PropertyDecorator=(target,key)=>{
+//     console.log(target,key)
+// }
 
 
-@Base("xiao yu")
-class Http {
-    @Name
-    xiaoman:string
-    constructor(){
-        this.xiaoman ='小滿'
-    }
+// @Base("xiao yu")
+// class Http {
+//     @Name
+//     xiaoman:string
+//     constructor(){
+//         this.xiaoman ='小滿'
+//     }
 
-  @Get("https://jsonplaceholder.typicode.com/posts/1")
-  getList(@Result() data:any) {
-    console.log(data)
-  }
-  create() {}
-}
-const http = new Http() as any;
-// console.log(http.name);
-http.fn()
+//   @Get("https://jsonplaceholder.typicode.com/posts/1")
+//   getList(@Result() data:any) {
+//     console.log(data)
+//   }
+//   create() {}
+// }
+// const http = new Http() as any;
+// // console.log(http.name);
+// http.fn()
+//------------------------------------
+//proxy reflect
+// const person={name:"小滿",age:19}
+// console.log(Reflect.get(person,'name',person));
+// console.log(Reflect.set(person, "name",'大滿', person));
+// console.log(person)
+// const personProxy = new Proxy(person,{
+//   get(target,key,receiver){
+//     if(target.age<=18){
+//       return Reflect.get(target,key,receiver)
+//     }else{
+//       return '小滿成年拉'
+//     }
+//   }
+// })
+// console.log(personProxy.age)
+
+//mobx observable
+// const list:Set<Function>=new Set()
+
+// const autoRun=(cb:Function)=>{
+//   if(!list.has(cb)){
+//     list.add(cb)
+//   }
+// }
+
+
+// const observable = <T extends object>(params:T)=>{
+//   return new Proxy(params,{
+//     set(target,key,value,receiver){
+//       const result = Reflect.set(target, key, value, receiver);
+//       list.forEach(fn=>fn())
+//       return result
+//     }
+//   })
+// }
+// const personProxy=observable({name:"小滿",attr:"威猛先生"})
+
+// autoRun(()=>{
+//   console.log("有變化拉")
+// })
+// personProxy.attr='威猛個垂垂'
+
+//協變 鴨子類型
